@@ -120,12 +120,20 @@ document.querySelector('.pay').addEventListener('click', (e) => {
             <p>Cash Received: ${currencySymbol}${amount.toFixed(2)}</p>
             <p>Thank you!</p>
         `;
+        // Show success animation, clear inputs, and reset cart after payment
+        startPaymentSuccessAnimation();
+        document.querySelector('.received').value = ''; // Clear input field
+        drawCheckout(); // Reset cart total to $0
     } else if (cashReturn > 0) {
         div.innerHTML = `
             <p>Cash Received: ${currencySymbol}${amount.toFixed(2)}</p>
             <p>Cash Returned: ${currencySymbol}${cashReturn.toFixed(2)}</p>
             <p>Thank you!</p>
         `;
+        // Show success animation, clear inputs, and reset cart after payment
+        startPaymentSuccessAnimation();
+        document.querySelector('.received').value = ''; // Clear input field
+        drawCheckout(); // Reset cart total to $0
     } else {
         // Handle the case where the balance is still due
         div.innerHTML = `
@@ -153,7 +161,8 @@ function startPaymentSuccessAnimation() {
   }, 2000);
 }
 
-// Currency converter
+
+/* Currency converter */
 function currencyBuilder() {
     let currencyPicker = document.querySelector('.currency-selector');
     let select = document.createElement('select');
