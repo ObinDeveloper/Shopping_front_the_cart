@@ -7,7 +7,7 @@ function drawProducts() {
     products.forEach((element) => {
         productItems += `
             <div data-productId='${element.productId}'>
-                <img src='${element.image}'>
+                <img src='${element.image}' alt='${element.name}'>
                 <h3>${element.name}</h3>
                 <p>Price: ${currencySymbol}${convertCurrency(element.price)}</p>
                 <button class="add-to-cart">Add to Cart</button>
@@ -21,7 +21,6 @@ function drawProducts() {
 // Draws cart
 function drawCart() {
     let cartList = document.querySelector('.cart');
-    // clear cart before drawing
     let cartItems = '';
     cart.forEach((element) => {
         let itemTotal = element.price * element.quantity;
@@ -56,9 +55,11 @@ function drawCheckout() {
 }
 
 // Initialize store with products, cart, and checkout
-drawProducts();
-drawCart();
-drawCheckout();
+document.addEventListener('DOMContentLoaded', function() {
+    drawProducts();
+    drawCart();
+    drawCheckout();
+});
 
 document.querySelector('.products').addEventListener('click', (e) => {
     let productId = e.target.parentNode.getAttribute('data-productId');

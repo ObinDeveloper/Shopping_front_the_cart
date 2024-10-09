@@ -1,9 +1,9 @@
-// Array of product objects
-let products = [
+// Array of product objects - making it globally accessible with window.products
+window.products = [
   {
     name: "Carton of Cherries",
     price: 4,
-    quantity: 0, // quantity starts at zero in cart
+    quantity: 0,
     productId: 100,
     image: "./images/cherry.jpg"
   },
@@ -24,7 +24,7 @@ let products = [
 ];
 
 // Empty array to hold cart items
-let cart = [];
+window.cart = [];
 
 // Currency rates (relative to USD)
 let currencyRates = {
@@ -127,17 +127,3 @@ function pay(amount) {
 function currency(currencyCode) {
   currentCurrency = currencyCode;
 }
-
-/* The following is for running unit tests */
-module.exports = {
-  products,
-  cart,
-  addProductToCart,
-  increaseQuantity,
-  decreaseQuantity,
-  removeProductFromCart,
-  cartTotal,
-  pay,
-  emptyCart,
-  currency // Uncommented for currency converter functionality
-};
