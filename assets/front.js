@@ -96,9 +96,14 @@ document.querySelector('.cart').addEventListener('click', (e) => {
     }
 });
 
-// Payment functionality - updated to clear previous receipts
+// Payment functionality - updated to prevent submission if cart is empty and show success animation
 document.querySelector('.pay').addEventListener('click', (e) => {
     e.preventDefault(); // Prevent form submission refresh
+
+    if (cart.length === 0) {
+        alert('Your cart is empty. Please add items before paying.');
+        return;
+    }
 
     let amount = parseFloat(document.querySelector('.received').value); // Get cash input
     let cashReturn = pay(amount); // Calculate based on total amount due
@@ -126,46 +131,4 @@ document.querySelector('.pay').addEventListener('click', (e) => {
         div.innerHTML = `
             <p>Cash Received: ${currencySymbol}${amount.toFixed(2)}</p>
             <p>Remaining Balance: ${currencySymbol}${cashReturn.toFixed(2)}</p>
-            <p>Please pay the remaining amount.</p>
-        `;
-    }
-
-    paymentSummary.append(div);
-});
-
-// Clear receipt when the cart is updated
-function clearReceipt() {
-  document.querySelector('.pay-summary').innerHTML = '';
-}
-
-// Currency converter
-function currencyBuilder() {
-    let currencyPicker = document.querySelector('.currency-selector');
-    let select = document.createElement('select');
-    select.classList.add('currency-select');
-    select.innerHTML = `
-        <option value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="YEN">YEN</option>
-    `;
-    currencyPicker.append(select);
-}
-currencyBuilder();
-
-document.querySelector('.currency-select').addEventListener('change', function handleChange(event) {
-    switch (event.target.value) {
-        case 'EUR':
-            currencySymbol = '€';
-            break;
-        case 'YEN':
-            currencySymbol = '¥';
-            break;
-        default:
-            currencySymbol = '$';
-            break;
-    }
-    currency(event.target.value);
-    drawProducts();
-    drawCart();
-    drawCheckout();
-});
+           

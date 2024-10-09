@@ -121,6 +121,8 @@ function pay(amount) {
   // If customer paid exactly or more, reset totalPaid and return correct change
   if (difference >= 0) {
     totalPaid = 0; // Reset for the next transaction
+    startPaymentSuccessAnimation(); // Start green animation on successful payment
+    setTimeout(resetPage, 30000); // Reset page after 30 seconds
   }
   return difference; // Positive for change, negative for remaining balance
 }
@@ -128,6 +130,15 @@ function pay(amount) {
 // Function to clear the receipt area before generating a new one
 function clearReceipt() {
   document.querySelector('.pay-summary').innerHTML = '';
+}
+
+// Function to reset the page after a successful purchase
+function resetPage() {
+  emptyCart();
+  clearReceipt();
+  drawCart();
+  drawCheckout();
+  document.querySelector('.received').value = '';
 }
 
 /**
