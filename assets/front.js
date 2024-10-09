@@ -131,4 +131,56 @@ document.querySelector('.pay').addEventListener('click', (e) => {
         div.innerHTML = `
             <p>Cash Received: ${currencySymbol}${amount.toFixed(2)}</p>
             <p>Remaining Balance: ${currencySymbol}${cashReturn.toFixed(2)}</p>
-           
+            <p>Please pay the remaining amount.</p>
+        `;
+    }
+
+    paymentSummary.append(div);
+});
+
+// Clear receipt when the cart is updated
+function clearReceipt() {
+  document.querySelector('.pay-summary').innerHTML = '';
+}
+
+// Function to show a green circular animation on payment success
+function startPaymentSuccessAnimation() {
+  let overlay = document.createElement('div');
+  overlay.className = 'payment-success-overlay';
+  document.body.appendChild(overlay);
+  setTimeout(() => {
+    overlay.remove(); // Remove the overlay after 2 seconds
+  }, 2000);
+}
+
+// Currency converter
+function currencyBuilder() {
+    let currencyPicker = document.querySelector('.currency-selector');
+    let select = document.createElement('select');
+    select.classList.add('currency-select');
+    select.innerHTML = `
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="YEN">YEN</option>
+    `;
+    currencyPicker.append(select);
+}
+currencyBuilder();
+
+document.querySelector('.currency-select').addEventListener('change', function handleChange(event) {
+    switch (event.target.value) {
+        case 'EUR':
+            currencySymbol = '€';
+            break;
+        case 'YEN':
+            currencySymbol = '¥';
+            break;
+        default:
+            currencySymbol = '$';
+            break;
+    }
+    currency(event.target.value);
+    drawProducts();
+    drawCart();
+    drawCheckout();
+});

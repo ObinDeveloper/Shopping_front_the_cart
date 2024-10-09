@@ -82,3 +82,27 @@ button:hover {
     border: 1px solid #ccc;
     vertical-align: middle
 }
+
+/* added payment sucess overlay to make my website more interactive */
+.payment-success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 255, 0, 0.2);
+  border-radius: 50%;
+  z-index: 1000;
+  animation: grow-circle 2s ease-in-out forwards;
+}
+
+@keyframes grow-circle {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(5);
+    opacity: 0;
+  }
+}
