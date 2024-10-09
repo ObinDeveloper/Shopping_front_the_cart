@@ -106,19 +106,28 @@ function emptyCart() {
 }
 
 /**
- * Pay the required amount
+ * Pay the required amount with corrected logic
  */
 let totalPaid = 0;
 
 function pay(amount) {
-  totalPaid += amount;
+  totalPaid += amount; // Accumulate the paid amount
   let totalCost = cartTotal();
   let difference = totalPaid - totalCost;
 
+  // Clear previous receipt entries
+  clearReceipt();
+
+  // If customer paid exactly or more, reset totalPaid and return correct change
   if (difference >= 0) {
-    totalPaid = 0;
+    totalPaid = 0; // Reset for the next transaction
   }
-  return difference;
+  return difference; // Positive for change, negative for remaining balance
+}
+
+// Function to clear the receipt area before generating a new one
+function clearReceipt() {
+  document.querySelector('.pay-summary').innerHTML = '';
 }
 
 /**

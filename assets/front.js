@@ -65,6 +65,10 @@ document.querySelector('.products').addEventListener('click', (e) => {
     let productId = e.target.parentNode.getAttribute('data-productId');
     productId *= 1;
     addProductToCart(productId);
+
+    // Clear the previous receipt because the cart has changed
+    clearReceipt();
+
     drawCart();
     drawCheckout();
 });
@@ -92,35 +96,47 @@ document.querySelector('.cart').addEventListener('click', (e) => {
     }
 });
 
-// Payment functionality
+// Payment functionality - updated to clear previous receipts
 document.querySelector('.pay').addEventListener('click', (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent form submission refresh
 
-    let amount = document.querySelector('.received').value;
-    amount *= 1;
+    let amount = parseFloat(document.querySelector('.received').value); // Get cash input
+    let cashReturn = pay(amount); // Calculate based on total amount due
 
-    let cashReturn = pay(amount);
+    // Clear previous receipts
+    clearReceipt();
 
     let paymentSummary = document.querySelector('.pay-summary');
     let div = document.createElement('div');
 
-    if (cashReturn >= 0) {
+    // Correct calculation for receipt output
+    if (cashReturn === 0) {
         div.innerHTML = `
-            <p>Cash Received: ${currencySymbol}${amount}</p>
-            <p>Cash Returned: ${currencySymbol}${cashReturn}</p>
+            <p>Cash Received: ${currencySymbol}${amount.toFixed(2)}</p>
+            <p>Thank you!</p>
+        `;
+    } else if (cashReturn > 0) {
+        div.innerHTML = `
+            <p>Cash Received: ${currencySymbol}${amount.toFixed(2)}</p>
+            <p>Cash Returned: ${currencySymbol}${cashReturn.toFixed(2)}</p>
             <p>Thank you!</p>
         `;
     } else {
-        document.querySelector('.received').value = '';
+        // Handle the case where the balance is still due
         div.innerHTML = `
-            <p>Cash Received: ${currencySymbol}${amount}</p>
-            <p>Remaining Balance: ${currencySymbol}${cashReturn}</p>
+            <p>Cash Received: ${currencySymbol}${amount.toFixed(2)}</p>
+            <p>Remaining Balance: ${currencySymbol}${cashReturn.toFixed(2)}</p>
             <p>Please pay the remaining amount.</p>
-            <hr/>
         `;
     }
+
     paymentSummary.append(div);
 });
+
+// Clear receipt when the cart is updated
+function clearReceipt() {
+  document.querySelector('.pay-summary').innerHTML = '';
+}
 
 // Currency converter
 function currencyBuilder() {
